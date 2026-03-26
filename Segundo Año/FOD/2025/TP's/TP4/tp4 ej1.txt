@@ -1,0 +1,64 @@
+1. Considere que desea almacenar en un archivo la información correspondiente a los alumnos de la Facultad de Informática de la UNLP. De los mismos deberá guardarse nombre y apellido, DNI, legajo y año de ingreso. Suponga que dicho archivo se organiza como un árbol B de orden M.
+a. Defina en Pascal las estructuras de datos necesarias para organizar el archivo de alumnos como un árbol B de orden M.
+------------------------------------------------------------a------------------------------------------------------------
+
+type
+
+const
+ M = ?; //Orden
+
+type
+  alumnos = record
+    nom:string;
+    ape:string;
+    dni:integer;
+    legajo:integer;
+    anio:integer;
+  end;
+  
+  nodo = record
+    hijos:array[1..M] of integer;
+    claves: array[1..(M-1)] of alumno;
+    nroReg: integer;
+  end;
+
+archivo = file of nodo;
+------------------------------------------------------------a------------------------------------------------------------
+b. Suponga que la estructura de datos que representa una persona (registro de persona) ocupa 64 bytes, que cada nodo del árbol B tiene un tamaño de 512 bytes y que los números enteros ocupan 4 bytes, ¿cuántos registros de persona entrarían en un nodo del árbol B? ¿Cuál sería el orden del árbol B en este caso (el valor de M)? Para resolver este inciso, puede utilizar la fórmula N = (M-1) * A + M * B + C, donde N es el tamaño del nodo (en bytes), A es el tamaño de un registro (en bytes), B es el tamaño de cada enlace a un hijo y C es el tamaño que ocupa el campo referido a la cantidad de claves. El objetivo es reemplazar estas variables con los valores dados y obtener el valor de M (M debe ser un número entero, ignorar la parte decimal).
+------------------------------------------------------------b------------------------------------------------------------
+N = (M - 1) * A + M * B + C
+
+N: tamaño del nodo en bytes.
+A: tamaño de un registro en bytes
+B: tamaño de cada enlace a un hijo 
+C: tamaño que ocupa el campo referido a la cantidad de claves
+
+obtener M. (orden del árbol) y ver cuantos registros entran.
+
+512 = (M - 1) * 64 + M * 4 + 4
+512 = 64M - 64 + 4M + 4
+512 = 64M + 4M - 64 + 4
+512 = 68M - 60
+68M = 512 + 60
+68M = 572
+M = 572/68
+M = 8.4
+
+El orden es 8, por lo tanto la cantidad de nodos que entran en cada campo son 7.
+------------------------------------------------------------b------------------------------------------------------------
+c. ¿Qué impacto tiene sobre el valor de M organizar el archivo con toda la información de los alumnos como un árbol B?
+------------------------------------------------------------c------------------------------------------------------------
+Afecta la cantidad máxima de elementos que va a tener un nodo y la altura que tiene el árbol
+------------------------------------------------------------c------------------------------------------------------------
+d. ¿Qué dato seleccionaría como clave de identificación para organizar los elementos (alumnos) en el árbol B? ¿Hay más de una opción?
+------------------------------------------------------------d------------------------------------------------------------
+Yo seleccionaría como clave legajo ya que es una que se proporciona. Otra opción de identificación puede ser el DNI.
+------------------------------------------------------------d------------------------------------------------------------
+e. Describa el proceso de búsqueda de un alumno por el criterio de ordenamiento especificado en el punto previo. ¿Cuántas lecturas de nodos se necesitan para encontrar un alumno por su clave de identificación en el peor y en el mejor de los casos? ¿Cuáles serían estos casos?
+------------------------------------------------------------e------------------------------------------------------------
+Si el proceso se hace por legajo se debería recorrer el árbol hasta que el numero sea igual o mayor. Una vez que el numero es igual, se finaliza la búsqueda. Y si este es mayor al que se busca, se debe parar de buscar porque directamente no existe en el árbol. El mejor caso es que sea la raíz y que solo se una búsqueda. Y el peor caso seria (Lectura*Altura del árbol) ya que en el peor de los casos se encuentra en los nodos terminales.
+------------------------------------------------------------e------------------------------------------------------------
+f. ¿Qué ocurre si desea buscar un alumno por un criterio diferente? ¿Cuántas lecturas serían necesarias en el peor de los casos?
+------------------------------------------------------------f------------------------------------------------------------
+Si buscamos un alumno por un criterio diferente estaríamos desaprovechando el ordenamiento ya definido,y deberíamos recorrer todo el árbol en el peor de los casos. Por lo tanto la cantidad de lecturas necesarias en el peor de los casos seria n. n = cantidad de nodos del árbol.
+------------------------------------------------------------f------------------------------------------------------------

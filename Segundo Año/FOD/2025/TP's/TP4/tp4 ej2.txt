@@ -1,0 +1,64 @@
+2. Una mejora respecto a la solución propuesta en el ejercicio 1 sería mantener por un lado el archivo que contiene la información de los alumnos de la Facultad de Informática (archivo de datos no ordenado) y por otro lado mantener un índice al archivo de datos que se estructura como un árbol B que ofrece acceso indizado por DNI de los alumnos.
+a. Defina en Pascal las estructuras de datos correspondientes para el archivo de alumnos y su índice.
+------------------------------------------------------------a------------------------------------------------------------
+type
+
+const
+ M = ?; //Orden
+
+type
+  alumnos = record
+    nom:string;
+    ape:string;
+    dni:integer;
+    legajo:integer;
+    anio:integer;
+  end;
+
+  archivo = file of alumnos;
+  
+  nodo = record
+    cant:integer;
+    claves: array[1..(M-1)] of integer;
+    enlaces: array[1..(M-1)] of integer;
+    hijos:array[1..M] of integer;
+  end;
+
+  indices = file of nodo;
+------------------------------------------------------------a------------------------------------------------------------
+b. Suponga que cada nodo del árbol B cuenta con un tamaño de 512 bytes. ¿Cuál sería el orden del árbol B (valor de M) que se emplea como índice? Asuma que los números enteros ocupan 4 bytes. Para este inciso puede emplear una fórmula similar al punto 1b, pero considere además que en cada nodo se deben almacenar los M-1 enlaces a los registros correspondientes en el archivo de datos.
+------------------------------------------------------------b------------------------------------------------------------
+N = (M - 1) * A + (M - 1) * A + M * B + C
+
+N: tamaño del nodo en bytes
+A: tamaño de un integer.
+B: tamaño de cada enlace a un hijo.
+C: tamaño que ocupa el campo referido a la cantidad de claves
+
+512 = (M - 1) * 4 + (M - 1) * 4 + M * 4 + 4
+512 = 4M - 4 + 4M - 4 + 4M + 4
+512 = 12M - 4 
+512 + 4 = 12M
+516 = 12M
+516/12 = M
+M = 43
+
+Entonces, el orden del árbol es 43 y la cantidad de elementos por nodo será de 42
+------------------------------------------------------------b------------------------------------------------------------
+c. ¿Qué implica que el orden del árbol B sea mayor que en el caso del ejercicio 1?
+------------------------------------------------------------c------------------------------------------------------------
+Lo que implica es que se va a acceder a una mayor cantidad de registros en menos lecturas, ya que en un nodo ahora tenemos 42 contra los 7 anteriores.
+Un mayor M significa que cada nodo puede contener más claves y enlaces a hijos, lo que reduce la altura del árbol y mejora el rendimiento de las búsquedas y actualizaciones. Esto hace que el índice sea más eficiente comparado con un árbol B de menor orden.
+------------------------------------------------------------c------------------------------------------------------------
+d. Describa con sus palabras el proceso para buscar el alumno con el DNI 12345678 usando el índice definido en este punto.
+------------------------------------------------------------d------------------------------------------------------------
+Deberíamos comenzar en la raíz del árbol índice, comparar el DNI con las claves en el nodo actual. Si la clave esta en el nodo, usar el enlace al archivo de datos para acceder al registro del alumno, si la clave es menor que una clave del nodo nos movemos al hijo izquierdo correspondiente. Si la llave es mayor nos movemos al hijo derecho y repetimos hasta encontrar la llave o llegar a un nodo mayor o menor al buscado, ahí también se cortara la búsqueda.
+------------------------------------------------------------d------------------------------------------------------------
+e. ¿Qué ocurre si desea buscar un alumno por su número de legajo? ¿Tiene sentido usar el índice que organiza el acceso al archivo de alumnos por DNI? ¿Cómo haría para brindar acceso indizado al archivo de alumnos por número de legajo?
+------------------------------------------------------------e------------------------------------------------------------
+Buscar por numero de legajo en el índice basado en el dni no tiene sentido. Para tener un acceso indizado por numero de legajo, se necesitaría mantener un segundo índice estructurado como un árbol b en el numero de legajo.
+------------------------------------------------------------e------------------------------------------------------------
+f. Suponga que desea buscar los alumnas que tienen DNI en el rango entre 40000000 y 45000000. ¿Qué problemas tiene este tipo de búsquedas con apoyo de un árbol B que solo provee acceso indizado por DNI al archivo de alumnos?
+------------------------------------------------------------f------------------------------------------------------------
+Buscar alumnos con DNI en ese rango en un árbol b que solo tiene acceso indizado por DNI puede ser ineficiente porque requiere recorrer y verificar múltiples nodos para encontrar todos los valores dentro del rango. Un índice adicional o una estructura de datos que soporte búsquedas de rango de forma eficiente seria necesaria para mejorar esta operación.
+------------------------------------------------------------f------------------------------------------------------------
