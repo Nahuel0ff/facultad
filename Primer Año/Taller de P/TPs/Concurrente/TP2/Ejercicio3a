@@ -1,0 +1,99 @@
+programa ejercicio3
+
+procesos
+  proceso limpiarFlores (ES f:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      f:= f+1
+  fin
+  
+  proceso limpiarPapeles (ES p:numero)
+  comenzar
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      p:= p+1
+  fin
+  
+  proceso recorrerPapeles (ES p:numero)
+  comenzar
+    repetir 9
+      si (HayPapelEnLaEsquina)
+        limpiarPapeles(p)
+      mover
+    si (HayPapelEnLaEsquina)
+      limpiarPapeles(p)
+  fin
+  
+  proceso recorrerFlores (ES f:numero)
+  comenzar
+    repetir 9
+      si (HayFlorEnLaEsquina)
+        limpiarFlores(f)
+      mover
+    si (HayFlorEnLaEsquina)
+      limpiarFlores(f)
+  fin
+  
+areas
+  areaA1: AreaP(1,1,10,1)
+  areaA2: AreaP(11,1,20,1)
+  areaB1: AreaP(1,5,10,5)
+  areaB2: AreaP(11,5,20,5)
+  
+robots
+  robot robotA1
+  variables
+    p: numero
+  comenzar
+    p:=0
+    derecha
+    recorrerPapeles(p)
+    EnviarMensaje(p,robotA2)
+  fin
+  
+  robot robotA2
+  variables
+    p:numero
+  comenzar
+    RecibirMensaje(p,robotA1)
+    derecha
+    recorrerPapeles(p)
+    Informar('Total papeles',p)
+  fin
+  
+  robot robotB1
+  variables
+    f:numero
+  comenzar
+    f:=0
+    derecha
+    recorrerFlores(f)
+    EnviarMensaje(f,robotB2)
+  fin
+  
+  robot robotB2
+  variables
+    f:numero
+  comenzar
+    RecibirMensaje(f,robotB1)
+    derecha
+    recorrerFlores(f)
+    Informar('Total flores',f)
+  fin
+  
+variables
+  A1: robotA1
+  A2: robotA2
+  B1: robotB1
+  B2: robotB2
+comenzar
+  AsignarArea(A1, areaA1)
+  AsignarArea(A2, areaA2)
+  AsignarArea(B1, areaB1)
+  AsignarArea(B2, areaB2)
+  Iniciar(A1, 1,1)
+  Iniciar(A2, 11,1)
+  Iniciar(B1, 1,5)
+  Iniciar(B2, 11,5)
+fin

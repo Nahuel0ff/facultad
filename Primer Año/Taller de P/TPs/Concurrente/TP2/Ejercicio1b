@@ -1,0 +1,57 @@
+programa ejemplo
+procesos
+  proceso limpiarFlores (ES flores: numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      flores:= flores + 1
+  fin
+  
+  proceso recorrer (ES flores: numero)
+  comenzar
+    repetir 9
+      limpiarFlores(flores)
+      mover
+    limpiarFlores(flores)
+  fin
+areas
+  area1: AreaP (1,1,1,10)
+  area2: AreaP (2,11,2,20)
+  area3: AreaP (2,1,2,1)
+  
+robots
+  robot robot1
+  variables
+    f:numero
+  comenzar
+    f:=0
+    recorrer(f)
+    EnviarMensaje(f,robotF)
+  fin
+  
+  robot robotFiscal
+  variables
+    f1, f2, f: numero
+  comenzar
+    f:=0
+    RecibirMensaje(f1,*)
+    RecibirMensaje(f2,*)
+    si (f1 > f2)
+      f:= f1 - f2
+    sino
+      f:= f2 - f1
+    Informar('Diferencia ',f)
+  fin
+variables
+  robotUno: robot1
+  robotDos: robot1
+  robotF: robotFiscal
+comenzar
+  AsignarArea(robotUno, area1)
+  AsignarArea(robotDos,area2)
+  AsignarArea(robotF,area3)
+  Iniciar(robotUno, 1,1)
+  Iniciar(robotDos, 2,11)
+  Iniciar(robotF, 2,1)
+  
+fin

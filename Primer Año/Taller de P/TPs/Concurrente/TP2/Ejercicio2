@@ -1,0 +1,82 @@
+programa ejercicio2
+procesos
+  proceso izquierda
+  comenzar
+    repetir 3
+      derecha
+  fin
+  proceso limpiarFlores (ES f:numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      f:= f+1
+  fin
+  proceso limpiarPapeles (ES p:numero)
+  comenzar
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      p:=p+1
+  fin
+  proceso esquina (ES f:numero; ES p:numero)
+  comenzar
+    si(HayFlorEnLaEsquina)
+      limpiarFlores(f)
+    si (HayPapelEnLaEsquina)
+      limpiarPapeles(p)
+  fin
+  proceso escalon (E dimension:numero; ES cantidadEsc: numero)
+  variables
+    f,p:numero
+  comenzar
+    f:=0
+    p:=0
+    repetir dimension
+      esquina(f,p)
+      mover
+    esquina(f,p)
+    derecha
+    mover
+    izquierda
+    si(f>p)
+      cantidadEsc:=cantidadEsc + 1
+  fin
+areas
+  areaF: AreaP (1,1,1,1)
+  ciudad: AreaC (2,1,100,100)
+robots
+  robot robot1
+  variables
+    dimension,cantidadEsc:numero
+  comenzar
+    cantidadEsc:=0
+    repetir 4
+      Random(dimension,1,5)
+      escalon(dimension,cantidadEsc)
+    EnviarMensaje(cantidadEsc,robotF)
+  fin
+  
+  robot robotFiscal
+  variables
+    suma,cantidadEsc:numero
+  comenzar
+    suma:=0
+    repetir 3
+      RecibirMensaje(cantidadEsc,*)
+      suma:= suma + cantidadEsc
+    Informar('Suma',suma)
+  fin
+variables
+  robotUno: robot1
+  robotDos: robot1
+  robotTres: robot1
+  robotF: robotFiscal
+comenzar
+  AsignarArea(robotUno, ciudad)
+  AsignarArea(robotDos, ciudad)
+  AsignarArea(robotTres, ciudad)
+  AsignarArea(robotF, areaF)
+  Iniciar(robotUno, 2,1)
+  Iniciar(robotDos, 7,1)
+  Iniciar(robotTres, 12,1)
+  Iniciar(robotF, 1,1)
+fin

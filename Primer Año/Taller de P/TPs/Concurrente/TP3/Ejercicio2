@@ -1,0 +1,136 @@
+programa ejercicio2
+procesos
+  proceso juntarFlores (ES f:numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      f:= f+1
+  fin
+
+  proceso juntarPapeles (ES p:numero)
+  comenzar
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      p:= p+1  
+  fin
+
+  proceso izquierda
+  comenzar
+    repetir 3
+      derecha
+  fin
+
+  proceso escalonFlores (E dim: numero; ES f: numero)
+  comenzar
+    juntarFlores(f)
+    repetir dim
+      mover
+    derecha
+    juntarFlores(f)
+    repetir dim
+      mover
+    izquierda
+  fin
+
+  proceso escalonPapeles (E dim2: numero; ES p: numero)
+  comenzar
+    juntarPapeles(p)
+    repetir dim2
+      mover
+    izquierda
+    juntarPapeles(p)
+    repetir dim2
+      mover
+    derecha
+  fin
+
+  proceso medio (E id:numero)
+  comenzar
+    EnviarMensaje(id,rj)
+    repetir 2
+      derecha
+    mover
+  fin
+
+  proceso recorrerFlores (ES f:numero; E id:numero)
+  variables
+    dim:numero
+  comenzar
+    dim:=5
+    repetir 5
+      escalonFlores(dim,f)
+      dim:=dim-1
+    derecha
+    BloquearEsquina(16,16)
+    medio(id)
+    LiberarEsquina(16,16)
+    dim:=1
+    repetir 4
+      escalonFlores(dim,f)
+      dim:=dim+1
+  fin
+
+  proceso recorrerPapeles (ES p:numero; E id:numero)
+  variables
+    dim2:numero
+  comenzar
+    dim2:=5
+    repetir 5
+      escalonPapeles(dim2,p)
+      dim2:=dim2-1
+    izquierda
+    BloquearEsquina(16,16)
+    medio(id)
+    LiberarEsquina(16,16)
+    dim2:=1
+    repetir 4
+      escalonPapeles(dim2,p)
+      dim2:=dim2+1
+  fin
+
+areas
+  ciudad: AreaC (1,1,100,100)
+
+robots
+  robot robot1
+  variables
+    f:numero
+    id:numero
+  comenzar
+    id:=1
+    f:=0
+    recorrerFlores(f,id)
+  fin
+
+  robot robot2
+  variables
+    p:numero
+    id:numero
+  comenzar
+    id:=2
+    p:=0
+    recorrerPapeles(p,id)
+  fin
+
+  robot robotjefe
+  variables
+    gano:numero
+    perdio:numero
+  comenzar
+    RecibirMensaje(gano,*)
+    RecibirMensaje(perdio,*)
+  fin
+
+variables
+  r1: robot1
+  r2: robot2
+  rj: robotjefe
+
+comenzar
+  AsignarArea(r1, ciudad)
+  AsignarArea(r2, ciudad)
+  AsignarArea(rj, ciudad)
+  Iniciar(r1, 1,1)
+  Iniciar(r2, 31,1)
+  Iniciar(rj, 15,1)
+fin

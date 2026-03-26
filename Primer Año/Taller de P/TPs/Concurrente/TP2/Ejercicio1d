@@ -1,0 +1,105 @@
+programa ejemplo
+procesos
+  proceso limpiarFlores (ES flores: numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      flores:= flores + 1
+  fin
+  
+  proceso recorrer (ES flores: numero)
+  comenzar
+    repetir 9
+      limpiarFlores(flores)
+      mover
+    limpiarFlores(flores)
+  fin
+  
+  proceso actualizarMax(E flores: numero; ES floresMaxi: numero)
+  comenzar
+    si floresMaxi < flores
+      floresMaxi:= flores
+  fin
+  
+  proceso asignarIDs
+  comenzar
+    EnviarMensaje(1,robotUno)
+    EnviarMensaje(2,robotDos)
+    EnviarMensaje(3,robotTres)
+    EnviarMensaje(4,robotCuatro)
+    EnviarMensaje(5,robotCinco)
+    EnviarMensaje(6,robotSeis)
+  fin
+  
+  
+areas
+  area1: AreaP(1,1,1,10)
+  area2: AreaP(2,11,2,20)
+  area3: AreaP(3,21,3,30)
+  area4: AreaP(4,31,4,40)
+  area5: AreaP(5,41,5,50)
+  area6: AreaP(6,51,6,60)
+  areaF: AreaP(2,1,2,1)
+  
+robots
+  robot robot1
+  variables
+    f:numero
+  comenzar
+    f:=0
+    recorrer(f)
+    EnviarMensaje(f,robotF)
+  fin
+  
+  robot robotFiscal
+  variables
+    flores, floresMaxi, id, idMax: numero
+  comenzar
+    floresMaxi:= 0
+    asignarIDs
+    repetir 6
+      RecibirMensaje(id,*)
+      si(id=1)
+        RecibirMensaje(flores,r1)
+      sino
+        si (id=2)
+          RecibirMensaje(flores,r2)
+        sino
+          si (id=3)
+            RecibirMensaje(flores,r3)
+          sino
+            si(id=4)
+              RecibirMensaje(flores,r4)
+            sino
+              si(id=5)
+                RecibirMensaje(flores,r5)
+              sino
+                RecibirMensaje(flores,r6)
+      actualizarMax(flores, floresMax, id, idMax)
+    Informar(idMax,floresMax)
+  fin
+variables
+  robotUno: robot1
+  robotDos: robot1
+  robotTres: robot1
+  robotCuatro: robot1
+  robotCinco: robot1
+  robotSeis: robot1
+  robotF: robotFiscal
+comenzar
+  AsignarArea(robotUno, area1)
+  AsignarArea(robotDos,area2)
+  AsignarArea(robotTres,area3)
+  AsignarArea(robotCuatro,area4)
+  AsignarArea(robotCinco,area5)
+  AsignarArea(robotSeis,area6)
+  AsignarArea(robotF,areaF)
+  Iniciar(robotUno, 1,1)
+  Iniciar(robotDos, 2,11)
+  Iniciar(robotTres, 3,21)
+  Iniciar(robotCuatro, 4,31)
+  Iniciar(robotCinco, 5,41)
+  Iniciar(robotSeis, 6,51)
+  Iniciar(robotF, 2,1)
+  
+fin

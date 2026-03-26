@@ -1,0 +1,102 @@
+programa ejercicio4
+procesos
+  proceso primerEsquina (ES f:numero; E iniAv:numero; E iniCa:numero; ES testigo:boolean)
+  comenzar
+    Pos(10,10)
+    si (HayFlorEnLaEsquina)
+      tomarFlor
+      f:=f+1
+    sino
+      testigo := F
+    Pos(iniAv,iniCa)  
+  fin
+  
+  proceso segundaEsquina(ES f:numero; E iniAv:numero; E iniCa:numero)
+  comenzar
+    Pos(11,11)
+    si(HayFlorEnLaBolsa)
+      depositarFlor
+      f:=f-1
+    Pos(iniAv,iniCa)
+  fin
+  proceso iniciarId
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+    EnviarMensaje(4,r4)
+  fin
+areas
+  esquina1: AreaPC(10,10,10,10)
+  esquina2: AreaPC(11,11,11,11)
+  areaJ: AreaP(1,1,1,1)
+  areaR1: AreaP(9,9,9,9)
+  areaR2: AreaP(9,10,9,10)
+  areaR3: AreaP(9,11,9,11)
+  areaR4: AreaP(9,12,9,12)
+robots
+  robot robot1
+  variables
+    f: numero
+    iniAv:numero
+    iniCa:numero
+    testigo:boolean
+    id:numero
+  comenzar
+    RecibirMensaje(id,rj)
+    iniAv:=PosAv
+    iniCa:=PosCa
+    f:=0
+    testigo:=V
+    mientras (testigo)
+      BloquearEsquina(10,10)
+      primerEsquina(f,iniAv,iniCa,testigo)
+      LiberarEsquina(10,10)
+      si (testigo)
+        BloquearEsquina(11,11)
+        segundaEsquina(f,iniAv,iniCa)
+        LiberarEsquina(11,11)
+    EnviarMensaje(id,rj)
+  fin
+  
+  robot robotjefe
+  variables
+    ultimoId:numero
+  comenzar
+    ultimoId:=0
+    iniciarId
+    repetir 4
+      RecibirMensaje(ultimoId, *)
+    Informar('Ultimo',ultimoId)
+    Pos(11,11)
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+    Pos(1,1)
+  fin
+variables
+  r1: robot1
+  r2: robot1
+  r3: robot1
+  r4: robot1
+  rj:robotjefe
+comenzar
+  AsignarArea(r1, esquina1)
+  AsignarArea(r1, esquina2)
+  AsignarArea(r1, areaR1)
+  AsignarArea(r2, esquina1)
+  AsignarArea(r2, esquina2)
+  AsignarArea(r2, areaR2)
+  AsignarArea(r3, esquina1)
+  AsignarArea(r3, esquina2)
+  AsignarArea(r3, areaR3)
+  AsignarArea(r4, esquina1)
+  AsignarArea(r4, esquina2)
+  AsignarArea(r4, areaR4)
+  AsignarArea(rj, areaJ)
+  AsignarArea(rj, esquina2)
+  Iniciar(rj, 1,1)
+  Iniciar(r1, 9,9)
+  Iniciar(r2, 9,10)
+  Iniciar(r3, 9,11)
+  Iniciar(r4, 9,12)
+fin

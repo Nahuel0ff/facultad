@@ -1,0 +1,111 @@
+programa ejercicio3
+procesos
+  proceso enviarId
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+  fin
+  proceso limpiar(E dimension: numero)
+  comenzar
+    repetir dimension
+      mientras(HayPapelEnLaEsquina)
+        tomarPapel
+      mover
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+  fin
+  proceso reinicio
+  comenzar
+    EnviarMensaje(V,r1)
+    EnviarMensaje(V,r2)
+    EnviarMensaje(V,r3)
+  fin
+areas
+  area1: AreaP (1,1,1,100)
+  area2: AreaP (2,1,2,100)
+  area3: AreaP (3,1,3,100)
+  areaCoor: AreaP (5,5,5,5)
+robots
+  robot robot1
+  variables
+    id:numero
+    ok:boolean
+  comenzar
+    RecibirMensaje(id,rc)
+    limpiar(5)
+    si (id = 1)
+      EnviarMensaje(V,r2)
+      EnviarMensaje(V,r3)
+      RecibirMensaje(ok,*)
+      RecibirMensaje(ok,*)
+    sino
+      si(id = 2)
+        EnviarMensaje(V,r1)
+        EnviarMensaje(V,r3)
+        RecibirMensaje(ok,*)
+        RecibirMensaje(ok,*)
+      sino
+        si(id = 3)
+          EnviarMensaje(V,r1)
+          EnviarMensaje(V,r2)
+          RecibirMensaje(ok,*)
+          RecibirMensaje(ok,*)
+    repetir 18
+      limpiar(5)
+      si (id = 1)
+        EnviarMensaje(V,r2)
+        EnviarMensaje(V,r3)
+        RecibirMensaje(ok,*)
+        RecibirMensaje(ok,*)
+      sino
+        si(id = 2)
+          EnviarMensaje(V,r1)
+          EnviarMensaje(V,r3)
+          RecibirMensaje(ok,*)
+          RecibirMensaje(ok,*)
+        sino
+          si(id = 3)
+            EnviarMensaje(V,r1)
+            EnviarMensaje(V,r2)
+            RecibirMensaje(ok,*)
+            RecibirMensaje(ok,*)
+    limpiar(4)
+    si (id = 1)
+      EnviarMensaje(V,r2)
+      EnviarMensaje(V,r3)
+      RecibirMensaje(ok,*)
+      RecibirMensaje(ok,*)
+    sino
+      si(id = 2)
+        EnviarMensaje(V,r1)
+        EnviarMensaje(V,r3)
+        RecibirMensaje(ok,*)
+        RecibirMensaje(ok,*)
+      sino
+        si(id = 3)
+          EnviarMensaje(V,r1)
+          EnviarMensaje(V,r2)
+          RecibirMensaje(ok,*)
+          RecibirMensaje(ok,*)
+  fin
+  
+  robot robotcoor
+  comenzar
+    enviarId
+  fin
+variables
+  r1: robot1
+  r2: robot1
+  r3: robot1
+  rc: robotcoor
+comenzar
+  AsignarArea(r1, area1)
+  AsignarArea(r2, area2)
+  AsignarArea(r3, area3)
+  AsignarArea(rc, areaCoor)
+  Iniciar(r1, 1,1)
+  Iniciar(r2, 2,1)
+  Iniciar(r3, 3,1)
+  Iniciar(rc, 5,5)
+fin

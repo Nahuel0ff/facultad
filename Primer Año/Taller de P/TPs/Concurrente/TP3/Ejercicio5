@@ -1,0 +1,96 @@
+programa ejercicio5
+procesos
+  proceso juntar (E av:numero  ;E ca:numero ; ES ok:boolean)
+  comenzar
+    Pos(11,11)
+    si (HayPapelEnLaEsquina)
+      tomarPapel
+    sino
+      ok:=F
+    Pos(av,ca)
+  fin
+  proceso avanzar ( E ok:boolean)
+  comenzar
+    si (HayPapelEnLaBolsa)
+      depositarPapel
+      mover
+  fin
+  proceso enviarId
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+    EnviarMensaje(4,r4)
+  fin
+areas
+  punto: AreaPC (11,11,11,11)
+  area1: AreaP (4,1,4,100)
+  area2: AreaP (6,1,6,100)
+  area3: AreaP (8,1,8,100)
+  area4: AreaP (10,1,10,100)
+  areaj: AreaP(1,1,1,1)
+robots
+  robot robot1
+  variables
+    ok:boolean
+    av:numero
+    ca:numero
+    id:numero
+    caMax:numero
+  comenzar
+    RecibirMensaje(id,rj)
+    ok:=V
+    av:=PosAv
+    ca:=PosCa
+    mientras (ca < 100) & (ok)
+      BloquearEsquina(11,11)
+      juntar(av,ca,ok)
+      LiberarEsquina(11,11)
+      si (ok)
+        avanzar(ok)
+      ca:=PosCa
+    EnviarMensaje(id,rj)
+    ca:=PosCa
+    EnviarMensaje(ca,rj)
+    RecibirMensaje(caMax,rj)
+    si (caMax = ca)
+      Informar(id)
+  fin
+  robot robotjefe
+  variables
+    ca:numero
+    caMax:numero
+  comenzar
+    enviarId
+    caMax:= -1
+    repetir 4
+      RecibirMensaje(ca,*)
+      si (ca > caMax)
+        caMax:=ca
+    EnviarMensaje(caMax,r1)
+    EnviarMensaje(caMax,r2)
+    EnviarMensaje(caMax,r3)
+    EnviarMensaje(caMax,r4)
+  fin
+variables
+  r1: robot1
+  r2: robot1
+  r3: robot1
+  r4: robot1
+  rj: robotjefe
+comenzar
+  AsignarArea(r1, punto)
+  AsignarArea(r2, punto)
+  AsignarArea(r3, punto)
+  AsignarArea(r4, punto)
+  AsignarArea(r1, area1)
+  AsignarArea(r2, area2)
+  AsignarArea(r3, area3)
+  AsignarArea(r4, area4)
+  AsignarArea(rj, areaj)
+  Iniciar(r1, 4,1)
+  Iniciar(r2, 6,1)
+  Iniciar(r3, 8,1)
+  Iniciar(r4, 10,1)
+  Iniciar(rj, 1,1)
+fin

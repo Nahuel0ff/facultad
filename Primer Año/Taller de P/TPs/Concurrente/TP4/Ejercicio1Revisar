@@ -1,0 +1,109 @@
+programa ejercicio1
+procesos
+  proceso enviarId
+  comenzar
+    EnviarMensaje(1,rClie1)
+    EnviarMensaje(2,rClie2)
+    EnviarMensaje(3,rClie3)
+  fin
+areas
+  areaServ: AreaP (100,100,100,100)
+  area1: AreaPC (1,1,1,100)
+  area2: AreaPC (2,1,2,100)
+  area3: AreaPC (3,1,3,100)
+robots
+  robot robotSer
+  variables
+    id:numero
+    f:numero
+    ca:numero
+    av:numero
+    ok: boolean
+    robotTerm:numero
+  comenzar
+    robotTerm:=0
+    f:=0
+    ok:=V
+    enviarId
+    mientras (robotTerm < 3)
+      RecibirMensaje(id,*)
+      si (id = 1)
+        RecibirMensaje(f,rClie1)
+        RecibirMensaje(ca,rClie1)
+        RecibirMensaje(av,rClie1)
+      sino
+        si (id = 2)
+          RecibirMensaje(f,rClie2)
+          RecibirMensaje(ca,rClie2)
+          RecibirMensaje(av,rClie2)
+        sino
+          si (id = 3)
+            RecibirMensaje(f,rClie3)
+            RecibirMensaje(ca,rClie3)
+            RecibirMensaje(av,rClie3)
+      si (f <> 0)
+        ca:=ca+1
+        Pos(av,ca)
+        repetir f
+          depositarFlor
+        Pos (100,100)
+        si (id = 1)
+          EnviarMensaje(ok,rClie1)
+        sino
+          si (id = 2)
+            EnviarMensaje(ok,rClie2)
+          sino
+            si (id = 3)
+              EnviarMensaje(ok,rClie3) 
+          RecibirMensaje(f,*)  
+          si (f = 0)
+            robotTerm:= robotTerm +1
+  fin
+  
+  robot robotClie
+  variables
+    id:numero
+    f:numero
+    ok:boolean
+  comenzar
+    mientras (PosCa < 100)
+      RecibirMensaje(id,rSer)
+      Random(f,1,4)
+      EnviarMensaje(id,rSer)
+      EnviarMensaje(f,rSer)
+      EnviarMensaje(PosCa,rSer)
+      EnviarMensaje(PosCa,rSer)
+      RecibirMensaje(ok,rSer)
+      mover
+      mientras (HayFlorEnLaEsquina)
+        tomarFlor
+      repetir 2
+        derecha
+      mover
+      repetir 2
+        derecha
+      mientras (HayFlorEnLaBolsa)
+        depositarFlor
+        mover
+      si (PosCa = 100)
+        EnviarMensaje(0,rSer)
+      
+  fin
+variables
+  rSer: robotSer
+  rClie1: robotClie
+  rClie2: robotClie
+  rClie3: robotClie
+comenzar
+  AsignarArea(rSer, areaServ)
+  AsignarArea(rSer, area1)
+  AsignarArea(rSer, area2)
+  AsignarArea(rSer, area3)
+  AsignarArea(rClie1, area1)
+  AsignarArea(rClie2, area2)
+  AsignarArea(rClie3, area3)
+  Iniciar(rSer, 100,100)
+  Iniciar(rClie1, 1,1)
+  Iniciar(rClie2, 2,1)
+  Iniciar(rClie3, 3,1)
+fin
