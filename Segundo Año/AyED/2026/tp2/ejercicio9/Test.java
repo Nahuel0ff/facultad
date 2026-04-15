@@ -31,7 +31,7 @@ public class Test {
 		
 		arbol.entreNiveles(0, 4);
 		a1.entreNiveles(0, 4);
-		
+		// Esta roto, tengo que corregir el arbol creado
 		
 	}
 
