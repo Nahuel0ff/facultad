@@ -17,21 +17,36 @@ public class ParcialArboles {
 	}
 	
 	private void dfs(BinaryTree<Integer> arbol, BinaryTree<Dato> a1, int sum) {
-		if (arbol != null) {
 			int suma = arbol.getData() + sum;
 			int menos = arbol.getData() - sum;
 			Dato b = new Dato(suma,menos);
-			BinaryTree<Dato> a = new BinaryTree<>(b);
-			if (arbol.hasLeftChild() /*&& !a1.hasLeftChild()*/) {
-				a1.addLeftChild(a);
-				dfs(arbol.getLeftChild(),a1.getLeftChild(),suma);
+			a1.setData(b);
+			if (arbol.hasLeftChild()) {
+				BinaryTree<Dato> c = new BinaryTree<>();
+				a1.addLeftChild(c);
+				dfs(arbol.getLeftChild(),c,suma);
 			}
-			if (arbol.hasRightChild() /*&& !a1.hasRightChild()*/) {
-				a1.addRightChild(a);
-				dfs(arbol.getRightChild(),a1.getRightChild(),suma);
+			if (arbol.hasRightChild()) {
+				BinaryTree<Dato> d = new BinaryTree<>();
+				a1.addRightChild(d);
+				dfs(arbol.getRightChild(),d,suma);
 			}
-		}
+		
 	}
+
+	public void imprimirDFS(BinaryTree<Dato> a) {
+	    if (a != null && !a.isEmpty()) {
+	        System.out.println(a.getData()); 
+
+	        if (a.hasLeftChild()) {
+	            imprimirDFS(a.getLeftChild());
+	        }
+	        if (a.hasRightChild()) {
+	            imprimirDFS(a.getRightChild());
+	        }
+	    }
+	}
+	
 	
 	
 }
