@@ -18,4 +18,11 @@ public class Dato {
 		return menos;
 	}
 
+	@Override
+	public String toString() {
+		return "Dato [suma=" + suma + ", menos=" + menos + "]";
+	}
+
+	
+	
 }
