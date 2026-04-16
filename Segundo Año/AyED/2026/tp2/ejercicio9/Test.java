@@ -30,9 +30,12 @@ public class Test {
 		BinaryTree<Dato> a1 = a.sumAndDif(arbol);
 		
 		arbol.entreNiveles(0, 4);
-		a1.entreNiveles(0, 4);
-		// Esta roto, tengo que corregir el arbol creado
 		
-	}
+	ParcialArboles procesador = new ParcialArboles();
+	BinaryTree<Dato> a11 = procesador.sumAndDif(arbol);
 
+	System.out.println("Recorrido en profundidad de a1:");
+	procesador.imprimirDFS(a11);
+	}
+	
 }
