@@ -1,0 +1,96 @@
+programa ejemplo
+procesos
+  proceso moverse (ES flores:numero; E ca:numero; E av:numero)
+  variables
+    av2,ca2:numero
+  comenzar
+    av2:=PosAv
+    ca2:=PosCa
+    BloquearEsquina(av,ca)
+    Pos(av,ca)
+    si(HayFlorEnLaEsquina)
+      mientras(HayFlorEnLaEsquina)
+        tomarFlor
+        flores:= flores +1
+    Pos(av2,ca2)
+    LiberarEsquina(av,ca)
+  fin
+areas
+  areaJuego: AreaPC(1,1,20,20)
+  areaRob1: AreaP(21,21,21,21)
+  areaRob2: AreaP(22,22,22,22)
+  areaRobf: AreaP(23,23,23,23)
+  areaPerdedor: AreaPC(25,25,25,25)
+robots
+  robot robot1
+  variables
+    id:numero
+    flores:numero
+    av,ca:numero
+    ok:boolean
+  comenzar
+    flores:=0
+    RecibirMensaje(id,robf)
+    repetir 5
+      RecibirMensaje(av,robf)
+      RecibirMensaje(ca,robf)
+      moverse(flores,ca,av)
+      Informar("flores",flores)
+      EnviarMensaje(id,robf)
+      EnviarMensaje(flores,robf)
+    RecibirMensaje(ok,robf)
+    si (ok = F)
+      Pos(25,25)
+      repetir flores
+        depositarFlor
+  fin
+  robot robotfis
+  variables
+    flor1,flor2,av,ca,id,flortotal1,flortotal2:numero
+  comenzar
+    flortotal1:=0
+    flortotal2:=0
+    EnviarMensaje(1,rob1)
+    EnviarMensaje(2,rob2)
+    repetir 5
+      Random(av,1,20)
+      Random(ca,1,20)
+      EnviarMensaje(av,rob1)
+      EnviarMensaje(ca,rob1)
+      Random(av,1,20)
+      Random(ca,1,20)
+      EnviarMensaje(av,rob2)
+      EnviarMensaje(ca,rob2)
+      repetir 2
+        RecibirMensaje(id,*)
+        si (id = 1)
+          RecibirMensaje(flor1,rob1)
+          flortotal1:= flortotal1 + flor1
+        sino
+          RecibirMensaje(flor2,rob2)
+          flortotal2:= flortotal2 + flor2
+    si (flortotal1 > flortotal2)
+      Informar("Robotito1",flortotal1)
+      EnviarMensaje(V,rob1)
+      EnviarMensaje(F,rob2)
+    sino
+      Informar("Robotito2",flortotal2)
+      EnviarMensaje(F,rob1)
+      EnviarMensaje(V,rob2)
+  fin
+variables
+  rob1: robot1
+  rob2: robot1
+  robf: robotfis
+comenzar
+  AsignarArea(rob1,areaRob1)
+  AsignarArea(rob2,areaRob2)
+  AsignarArea(robf,areaRobf)
+  AsignarArea(rob1,areaJuego)
+  AsignarArea(rob2,areaJuego)
+  AsignarArea(rob1,areaPerdedor)
+  AsignarArea(rob2,areaPerdedor)
+  Iniciar(rob1,21,21)
+  Iniciar(rob2,22,22)
+  Iniciar(robf,23,23)
+fin
