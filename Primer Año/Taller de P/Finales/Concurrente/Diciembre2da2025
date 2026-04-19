@@ -1,0 +1,170 @@
+programa finalDiciembre
+procesos
+  proceso vaciar
+  comenzar
+    si (HayFlorEnLaBolsa)
+      mientras (HayFlorEnLaBolsa)
+        depositarFlor
+    si (HayPapelEnLaBolsa)
+      mientras(HayPapelEnLaBolsa)
+        depositarPapel
+  fin
+  proceso recorrido (ES flor: numero)
+  comenzar
+    repetir 18
+      si (HayFlorEnLaEsquina)
+        tomarFlor
+        flor:= flor+1
+      mover
+    si (HayFlorEnLaEsquina)
+      tomarFlor
+      flor:= flor+1
+  fin
+  proceso recorrido2 (ES papel: numero)
+  comenzar
+    repetir 18
+      si (HayPapelEnLaEsquina)
+        tomarPapel
+        papel:= papel+1
+      mover
+    si (HayPapelEnLaEsquina)
+      tomarPapel
+      papel:= papel+1
+  fin 
+  proceso depositar (ES flor: numero)
+  variables
+    av:numero
+    ca:numero
+  comenzar
+    av:=PosAv
+    ca:=PosCa
+    repetir flor
+      BloquearEsquina(1,6)
+      Pos(1,6)
+      si (HayFlorEnLaBolsa)
+        depositarFlor
+      Pos(av,ca)
+      LiberarEsquina(1,6)
+  fin
+  proceso depositar2 (ES papel: numero)
+  variables
+    av:numero
+    ca:numero
+  comenzar
+    av:=PosAv
+    ca:=PosCa
+    repetir papel
+      BloquearEsquina(1,6)
+      Pos(1,6)
+      si (HayPapelEnLaBolsa)
+        depositarPapel
+      Pos(av,ca)
+      LiberarEsquina(1,6)
+  fin
+areas
+  areaRobot1: AreaP(1,1,20,1)
+  areaRobot2: AreaP(1,2,20,2)
+  areaRobot3: AreaP(1,3,20,3)
+  areaRobot4: AreaP(1,4,20,4)
+  areaRobotF: AreaP(1,5,1,5)
+  areaDep: AreaPC (1,6,1,6)
+robots
+  robot robot1
+  variables
+    id:numero
+    flor:numero
+    ok:numero
+    num:numero
+    papel:numero
+  comenzar
+    flor:=0
+    num:=0
+    papel:=0
+    ok:=1
+    vaciar
+    EnviarMensaje(0,robf)
+    RecibirMensaje(id,robf)
+    derecha
+    mover
+    recorrido(flor)
+    depositar(flor)
+    EnviarMensaje(id,robf)
+    RecibirMensaje(ok,robf)
+    Informar(ok)
+    si (ok = 0)
+      repetir 2
+        derecha
+      recorrido2(papel)
+      depositar2(papel)
+      EnviarMensaje(id,robf)
+  fin
+  robot robotf
+  variables
+    num:numero
+    id:numero
+    comp1:numero
+    comp2:numero
+    ganador:numero
+  comenzar
+    num:=1
+    repetir 4
+      RecibirMensaje(num,*)
+    EnviarMensaje(1,R_info)
+    EnviarMensaje(2,rob)
+    EnviarMensaje(3,rob2)
+    EnviarMensaje(4,rob3)
+    RecibirMensaje(comp1,*)
+    RecibirMensaje(comp2,*)
+    si (comp1 = 1)
+      EnviarMensaje(0,R_info)
+    si (comp1 = 2)
+      EnviarMensaje(0,rob)
+    si (comp1 = 3)
+      EnviarMensaje(0,rob2)
+    si (comp1 = 4)
+      EnviarMensaje(0,rob3)
+    si (comp2 = 1)
+      EnviarMensaje(0,R_info)
+    si (comp2 = 2)
+      EnviarMensaje(0,rob)
+    si (comp2 = 3)
+      EnviarMensaje(0,rob2)
+    si (comp2 = 4)
+      EnviarMensaje(0,rob3)
+    repetir 2
+      RecibirMensaje(id,*)
+      si ~((id = comp1)&&(id = comp2))   
+        si (id = 1)
+          EnviarMensaje(1,R_info)
+        si (id = 2)
+          EnviarMensaje(1,rob)
+        si (id = 3)
+          EnviarMensaje(1,rob2)
+        si (id = 4)
+          EnviarMensaje(1,rob3)
+    RecibirMensaje(ganador,*)
+    Informar(ganador)
+    RecibirMensaje(ganador,*)
+  fin
+variables
+  R_info: robot1
+  rob: robot1
+  rob2: robot1
+  rob3: robot1
+  robf: robotf
+comenzar
+  AsignarArea(R_info,areaRobot1)
+  AsignarArea(rob,areaRobot2)
+  AsignarArea(rob2,areaRobot3)
+  AsignarArea(rob3,areaRobot4)
+  AsignarArea(robf,areaRobotF)
+  AsignarArea(R_info,areaDep)
+  AsignarArea(rob,areaDep)
+  AsignarArea(rob2,areaDep)
+  AsignarArea(rob3,areaDep)
+  Iniciar(R_info,1,1)
+  Iniciar(rob,1,2)
+  Iniciar(rob2,1,3)
+  Iniciar(rob3,1,4)
+  Iniciar(robf,1,5)
+fin
