@@ -1,0 +1,138 @@
+{Bienvenidos al entorno CMRE.
+Lo siguiente es un código de ejemplo que implementa un
+proceso que recibe un número de avenida como parámetro,
+se posiciona en esa avenida y la recorre.}
+
+programa ejemplo
+procesos
+  proceso depositarPapeles
+  variables
+    ca,av:numero
+  comenzar
+    Random(ca,1,5)
+    Random(av,1,5)
+    BloquearEsquina(av,ca)
+    Pos(av,ca)
+    depositarPapel
+    Pos(6,3)
+    LiberarEsquina(av,ca)
+  fin
+  proceso depositarFlores
+  variables
+    ca,av:numero
+  comenzar
+    Random(ca,1,5)
+    Random(av,1,5)
+    BloquearEsquina(av,ca)
+    Pos(av,ca)
+    depositarFlor
+    Pos(6,1)
+    LiberarEsquina(av,ca)
+  fin
+  proceso buscarPapeles
+  variables
+    num:numero
+    ca,av:numero
+  comenzar
+    num:=0
+    mientras (num < 2)
+      Random(ca,1,5)
+      Random(av,1,5)
+      BloquearEsquina(av,ca)
+      Pos(av,ca)
+      si(HayPapelEnLaEsquina)
+        tomarPapel
+        num:=num+1
+      Pos(6,2)
+      LiberarEsquina(av,ca)
+  fin
+  proceso buscarFlores
+  variables
+    num:numero
+    ca,av:numero
+  comenzar
+    num:=0
+    mientras (num < 2)
+      Random(ca,1,5)
+      Random(av,1,5)
+      BloquearEsquina(av,ca)
+      Pos(av,ca)
+      si (HayFlorEnLaEsquina)
+        tomarFlor
+        num:=num+1
+      Pos(6,4)
+      LiberarEsquina(av,ca)
+  fin
+areas
+  areaBusqueda: AreaPC(1,1,5,5)
+  areaFlor: AreaP(6,1,6,1)  
+  areaFlor2: AreaP(6,2,6,2)
+  areaPapel:AreaP(6,3,6,3)
+  areaPapel2:AreaP(6,4,6,4)
+  areaF: AreaP(6,5,6,5)
+robots
+  robot robot1
+  comenzar
+    repetir 2
+      depositarPapeles
+    EnviarMensaje(0,robfis)
+  fin
+  robot robot2
+  variables
+    num:numero
+  comenzar
+    RecibirMensaje(num,robfis)
+    buscarFlores
+    EnviarMensaje(1,robfis)
+  fin
+  robot robot3
+  comenzar
+    repetir 2
+      depositarFlores
+    EnviarMensaje(0,robfis)
+  fin
+  robot robot4
+  variables
+    num:numero
+  comenzar
+    RecibirMensaje(num,robfis)
+    buscarPapeles
+    EnviarMensaje(2,robfis)
+  fin
+  robot robotf
+  variables
+    num:numero
+  comenzar
+    repetir 2
+      RecibirMensaje(num,*)
+    EnviarMensaje(0,robflor2)
+    EnviarMensaje(0,robpap2)
+    RecibirMensaje(num,*)
+    si (num = 1)
+      Informar("Gano papeles con el id",num)
+    sino
+      Informar("Gano papeles con el id",num)
+    RecibirMensaje(num,*)
+  fin
+variables
+  robpap:robot1
+  robpap2:robot2
+  robflor:robot3
+  robflor2:robot4
+  robfis:robotf
+comenzar
+  AsignarArea(robflor, areaFlor)
+  AsignarArea(robflor2, areaFlor2)
+  AsignarArea(robpap, areaPapel)
+  AsignarArea(robpap2, areaPapel2)
+  AsignarArea(robfis, areaF)
+  AsignarArea(robflor, areaBusqueda)
+  AsignarArea(robflor2, areaBusqueda)
+  AsignarArea(robpap, areaBusqueda)
+  AsignarArea(robpap2, areaBusqueda)
+  Iniciar(robflor,6,1)
+  Iniciar(robflor2,6,2)
+  Iniciar(robpap,6,3)
+  Iniciar(robpap2,6,4)
+  Iniciar(robfis,6,5)
+fin
